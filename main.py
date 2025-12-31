@@ -49,10 +49,33 @@ async def on_ready():
         print("✅ Task iniciada")
     except Exception as e:
         print(f"❌ Error iniciando task: {e}")
-    
+
+spam_channel = bot.get_channel(890963484181954610) 
+s = 0 
+
 @bot.event 
 async def on_message(msg):
-    print(msg);
+    if msg.author.bot or msg.channel.id != 890963484181954610: 
+        return 
+    global s
+    
+    
+    
+    match msg.content:
+        case "ACK":
+            if s == 0: 
+                await msg.channel.send("SYN-ACK")
+                s = 1
+            else:
+                await msg.channel.send("ACK")
+                s = 0
+        case "2025?":
+            await msg.channel.send("FELIZ 2026 AAAAAAAAAAAA")
+            
+        case "pegale a tado":
+            await msg.channel.send("pum pum tado malo uwu")
+            
+ 
 
 keep_alive()
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)

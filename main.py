@@ -75,6 +75,9 @@ async def on_message(msg):
         case "pegale a tado":
             await msg.channel.send("pum pum tado malo uwu")
             
+        case "quote":
+            await msg.channel.send("<@949479338275913799>") 
+            
  
 
 keep_alive()

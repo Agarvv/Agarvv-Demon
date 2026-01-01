@@ -9,6 +9,7 @@ from threading import Thread
 import asyncio
 import openai 
 from openai import OpenAI
+import re
 
 
 load_dotenv() 
@@ -53,17 +54,15 @@ async def on_ready():
 spam_channel = bot.get_channel(890963484181954610) 
 s = 0 
 
-@bot.event 
+@bot.event
 async def on_message(msg):
-    if msg.author.bot or msg.channel.id != 890963484181954610: 
-        return 
+    if msg.author.bot or msg.channel.id != 890963484181954610:
+        return
     global s
-    
-    
-    
+
     match msg.content:
         case "ACK":
-            if s == 0: 
+            if s == 0:
                 await msg.channel.send("SYN-ACK")
                 s = 1
             else:
@@ -71,14 +70,16 @@ async def on_message(msg):
                 s = 0
         case "2025?":
             await msg.channel.send("FELIZ 2026 AAAAAAAAAAAA")
-            
-        case "pegale a tado":
-            await msg.channel.send("pum pum tado malo uwu")
-            
-        case "quote":
-            await msg.channel.send("<@949479338275913799>") 
-            
- 
+
+
+    match_obj = re.match(r'^pegale a (.+)$', msg.content, re.IGNORECASE)
+    if match_obj:
+        username = match_obj.group(1)
+        protected = ("agarv", "agarvv", "agar", "garv")
+        if username.lower() in protected:
+            await msg.channel.send("ño ño ñooo a papi no le pego >w<")
+            return
+        await msg.channel.send(f"Pum pum {username} malo uwu")
 
 keep_alive()
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)

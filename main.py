@@ -79,7 +79,7 @@ async def on_message(msg):
         if username.lower() in protected:
             await msg.channel.send("ño ño ñooo a papi no le pego >w<")
             return
-        await msg.channel.send(f"Pum pum {username} malo uwu")
+        await msg.channel.send(f"Pum pum {username} serda guarrindonga mala uwu")
 
 keep_alive()
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)

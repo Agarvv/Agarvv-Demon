@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from threading import Thread
 import asyncio
 import re
-import detoxify
+from detoxify import Dexotify
 
 
 

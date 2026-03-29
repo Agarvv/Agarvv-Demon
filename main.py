@@ -57,7 +57,7 @@ s = 0
 
 @bot.event
 async def on_message(msg):
-    if msg.author.bot: or msg.channel.id != 890963484181954610:
+    if msg.author.bot or msg.channel.id != 890963484181954610:
         return
     
     res = model.predict(msg.content) 

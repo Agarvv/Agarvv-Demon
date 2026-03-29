@@ -7,9 +7,9 @@ from flask import Flask
 from datetime import datetime, timezone
 from threading import Thread
 import asyncio
-import openai 
-from openai import OpenAI
 import re
+import detoxify
+
 
 
 load_dotenv() 
@@ -20,6 +20,7 @@ intents = discord.Intents.default()
 intents.message_content = True 
 intents.messages = True
 intents.members = True  
+model = Detoxify('multilingual')
 
 bot = commands.Bot(command_prefix='/', intents=intents) 
 
@@ -56,8 +57,11 @@ s = 0
 
 @bot.event
 async def on_message(msg):
-    if msg.author.bot: #or msg.channel.id != 890963484181954610:
+    if msg.author.bot: or msg.channel.id != 890963484181954610:
         return
+    
+    res = model.predict(msg.content) 
+    await msg.channel.send(res); 
     global s
 
     match msg.content:

@@ -54,6 +54,7 @@ async def on_ready():
     saved = set()
     channel = bot.get_channel(890963484181954610);
     await channel.send("Comenzando la purga de pollas")
+    print("hola")
     while(1 > 0): 
         await asyncio.sleep(3600)
         

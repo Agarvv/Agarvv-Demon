@@ -8,7 +8,6 @@ from datetime import datetime, timezone
 from threading import Thread
 import asyncio
 import re
-from detoxify import Detoxify
 
 
 
@@ -20,7 +19,7 @@ intents = discord.Intents.default()
 intents.message_content = True 
 intents.messages = True
 intents.members = True  
-model = Detoxify('multilingual')
+
 
 bot = commands.Bot(command_prefix='/', intents=intents) 
 
@@ -40,10 +39,57 @@ def keep_alive():
     t = Thread(target=run)
     t.start()
 
+async def abort(s):
+    channel = bot.get_channel(890963484181954610);
+    await channel.send(f"Aborte a mi pene por error en: {s}")
+    print(s)
 
 @bot.event
 async def on_ready():
+    guild = bot.guilds[0]
+    start = datetime(2026, 5, 1)
+    end = datetime(2026, 5, 31, 23, 59, 59)
+    r = 0
+    saved = set()
+    channel = bot.get_channel(890963484181954610);
+    await channel.send("Comenzando la purga de pollas")
+    while(1 > 0): 
+        await asyncio.sleep(3600)
+        
     
+    try:  
+        for channel in guild.text_channels:
+            try: 
+                async for message in channel.history(after=start, before=end, limit=None):
+                    if message.author.id not in saved:
+                        saved.add(message.author.id)
+
+                    if r >= 100:
+                        r = 0
+                        await asyncio.sleep(1)
+                        
+                    else:
+                        r += 1
+
+            except:
+                abort("messages")  
+
+    except:
+        abort("channels")  
+
+
+    async for member in guild.fetch_members(limit=None):
+        if member.id not in saved and not member.bot:  
+            try:
+                await member.kick(reason="kick por inactivo.......... :v")
+                await asyncio.sleep(0.5)  
+            except:
+                abort("kick")
+            
+            
+            
+        
+        
 
 
     try:

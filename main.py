@@ -42,8 +42,9 @@ def keep_alive():
 async def abort(s):
     channel = bot.get_channel(890963484181954610);
     await channel.send(f"Aborte a mi pene por error en: {s}")
-    print(s)
-
+    while(1 > 0):
+        await asyncio.sleep(3600)
+    
 @bot.event
 async def on_ready():
     guild = bot.guilds[0]

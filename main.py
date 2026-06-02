@@ -53,31 +53,42 @@ async def on_ready():
     r = 0
     saved = set()
     channel = bot.get_channel(890963484181954610);
-    await channel.send("Comenzando la purga de pollas")
+    await channel.send("te amo papi... quiero ir a la cama a mimir...")
     print("hola")
-    while(1 > 0): 
-        await asyncio.sleep(3600)
         
     
     try:  
         for channel in guild.text_channels:
             try: 
                 async for message in channel.history(after=start, before=end, limit=None):
+                    print(message.created_at)
                     if message.author.id not in saved:
                         saved.add(message.author.id)
 
-                    if r >= 100:
+                    if r >= 1000:
                         r = 0
                         await asyncio.sleep(1)
                         
                     else:
                         r += 1
 
-            except:
-                abort("messages")  
+            except Exception as e:
+                print(f"error3: {type(e).__name__} - {str(e)}")  
+                await channel.send("error de no seq nosecuanto0")
+                while(1 > 0): 
+                    await asyncio.sleep(3600)
 
     except:
-        abort("channels")  
+        print(f"error3: {type(e).__name__} - {str(e)}")  
+        print("error3")
+        await channel.send("error de no seq nosecuanto")
+        while(1 > 0): 
+            await asyncio.sleep(3600)
+    
+    print("pollaaaaaa")
+    await channel.send(f"Se libraron {len(saved)} usuarios, sidiikslxcskl")
+    while(1 > 0): 
+        await asyncio.sleep(3600)
 
 
     async for member in guild.fetch_members(limit=None):

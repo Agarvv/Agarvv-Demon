@@ -51,9 +51,9 @@ async def on_ready():
     start = datetime(2026, 5, 1)
     end = datetime(2026, 5, 31, 23, 59, 59)
     r = 0
-    saved = set()
+    saved = []
     channel = bot.get_channel(890963484181954610);
-    await channel.send("te amo papi... quiero ir a la cama a mimir...")
+    await channel.send("<&1183086057344991263> no soy un monstruo gorda puta. yo no abortare a mis hijos como tu abortaste a tado, osea... panza, panza, panza, panza. mileurista, mileurista, mileurista. es como.. fuck. yo no puedo aguantar mucho mas aqui, ¿sabes?")
     print("hola")
         
     
@@ -63,7 +63,7 @@ async def on_ready():
                 async for message in channel.history(after=start, before=end, limit=None):
                     print(message.created_at)
                     if message.author.id not in saved:
-                        saved.add(message.author.id)
+                        saved.append(message.author.id)
 
                     if r >= 1000:
                         r = 0
@@ -86,6 +86,11 @@ async def on_ready():
             await asyncio.sleep(3600)
     
     print("pollaaaaaa")
+    async for idd in saved:
+        user = await guild.get_member(idd) 
+        
+        printf(f"user: {user.username}")
+        
     await channel.send(f"Se libraron {len(saved)} usuarios, sidiikslxcskl")
     while(1 > 0): 
         await asyncio.sleep(3600)

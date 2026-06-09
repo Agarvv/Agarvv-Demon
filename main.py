@@ -49,10 +49,19 @@ spam_channel = bot.get_channel(890963484181954610)
 general_channel = bot.get_channel(997124912475021462)
 s = 0 
     
+general_channel = None  # Definir como None globalmente
+
 @bot.event
 async def on_ready():
+    global general_channel, spam_channel 
+    general_channel = bot.get_channel(997124912475021462)
+    spam_channel = bot.get_channel(890963484181954610)
+    
     print("polla")
-    await general_channel.send("Hola me gusta el pito")
+    if general_channel:
+        await general_channel.send("dejame dormir papa...")
+    else:
+        print("pene")
 
 
 
@@ -65,13 +74,9 @@ async def on_member_join(member):
 
 @bot.event
 async def on_message(msg):
-    if msg.author.bot or msg.channel.id != 890963484181954610:
+    if msg.author.bot:
         return
     
-    res = model.predict(msg.content) 
-    await msg.channel.send(res); 
-    global s
-
     match msg.content:
         case "ACK":
             if s == 0:

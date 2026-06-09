@@ -57,11 +57,11 @@ async def on_ready():
     general_channel = bot.get_channel(997124912475021462)
     spam_channel = bot.get_channel(890963484181954610)
     
-    print("polla")
+    
     if general_channel:
-        await general_channel.send("dejame dormir papa...")
+        await general_channel.send("ya me canse de esta vida cruel papi matame")
     else:
-        print("pene")
+        print("not general channel")
 
 
 
@@ -70,7 +70,7 @@ import discord
 
 @bot.event
 async def on_member_join(member):
-        await general_channel.send(f"¡Bienvenido {member.mention} al servidor, pasala de puta madre y no olvides beber agua y nunca tomar acido sulfurico bajo ningun concepto, y que karlita te acompanie en todas tus acciones.")
+        await general_channel.send(f"¡Bienvenidx {member.mention} al servidor, pasala de puta madre y no olvides beber agua y nunca tomar acido sulfurico bajo ningun concepto, y que karlita te acompanie en todas tus acciones. (saludenlx todos, o os cojo.)")
 
 @bot.event
 async def on_message(msg):

@@ -1,30 +1,27 @@
-import discord 
+import discord
 from discord.ext import commands, tasks
-import logging 
-import os 
-from dotenv import load_dotenv 
+from discord import app_commands
+import logging
+import os
+from dotenv import load_dotenv
 from flask import Flask
 from datetime import datetime, timezone
 from threading import Thread
 import asyncio
 import re
 
-
-
-load_dotenv() 
+load_dotenv()
 token = os.getenv('DISCORD_TOKEN')
 
 handler = logging.FileHandler(filename='discord.log', encoding='utf8', mode='w')
 intents = discord.Intents.default()
-intents.message_content = True 
+intents.message_content = True
 intents.messages = True
-intents.members = True  
+intents.members = True
 
+bot = commands.Bot(command_prefix='/', intents=intents)
 
-bot = commands.Bot(command_prefix='/', intents=intents) 
-
-
-
+saludo = ""
 
 app = Flask('')
 
@@ -39,44 +36,49 @@ def keep_alive():
     t = Thread(target=run)
     t.start()
 
-async def abort(s):
-    channel = bot.get_channel(890963484181954610);
-    await channel.send(f"Aborte a mi pene por error en: {s}")
-    while(1 > 0):
+async def abort(s_param):
+    channel = bot.get_channel(890963484181954610)
+    await channel.send(f"Aborte a mi pene por error en: {s_param}")
+    while True:
         await asyncio.sleep(3600)
 
-spam_channel = bot.get_channel(890963484181954610) 
-general_channel = bot.get_channel(997124912475021462)
-s = 0 
-    
-general_channel = None  # Definir como None globalmente
+spam_channel = None
+general_channel = None
+s = 0
 
+@bot.tree.command(name="saludo_bienvenida", description="Cambia el saludo q el bot de mierda hara :v")
+@app_commands.describe(saludo="Nuevo Saludo de Agarv demon")
+async def cambiar_saludo(interaction: discord.Interaction, saludo_param: str):
+    global saludo
+    saludo = saludo_param
+    await interaction.response.send_message(f"Saludo actualizado a: {saludo}", ephemeral=True)
+
+# 67
 @bot.event
 async def on_ready():
-    global general_channel, spam_channel 
+    global general_channel, spam_channel
     general_channel = bot.get_channel(997124912475021462)
     spam_channel = bot.get_channel(890963484181954610)
-    
-    
+    await bot.tree.sync()
+
     if general_channel:
-        await general_channel.send("ya me canse de esta vida cruel papi matame")
+        await general_channel.send("De parte de Agarvv: os recuerdo que algun dia, sin que os deis cuenta, os robare las ventanas.")
     else:
         print("not general channel")
 
-
-
-
-import discord
-
 @bot.event
 async def on_member_join(member):
+    if saludo == "":
         await general_channel.send(f"¡Bienvenidx {member.mention} al servidor, pasala de puta madre y no olvides beber agua y nunca tomar acido sulfurico bajo ningun concepto, y que karlita te acompanie en todas tus acciones. (saludenlx todos, o os cojo.)")
+    else:
+        await general_channel.send(f"¡Bienvenidx {member.mention}, {saludo} ah y, No olvides verificarte en el canal de verificaciones!!!!!")
 
 @bot.event
 async def on_message(msg):
+    global s
     if msg.author.bot:
         return
-    
+
     match msg.content:
         case "ACK":
             if s == 0:
@@ -87,7 +89,6 @@ async def on_message(msg):
                 s = 0
         case "2025?":
             await msg.channel.send("FELIZ 2026 AAAAAAAAAAAA")
-
 
     match_obj = re.match(r'^pegale a (.+)$', msg.content, re.IGNORECASE)
     if match_obj:

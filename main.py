@@ -47,11 +47,21 @@ general_channel = None
 s = 0
 
 @bot.tree.command(name="saludo_bienvenida", description="Cambia el saludo q el bot de mierda hara :v")
-@app_commands.describe(saludo="Nuevo Saludo de Agarv demon")
+@app_commands.describe(saludo_param="Nuevo Saludo de Agarv demon")
 async def cambiar_saludo(interaction: discord.Interaction, saludo_param: str):
     global saludo
     saludo = saludo_param
     await interaction.response.send_message(f"Saludo actualizado a: {saludo}", ephemeral=True)
+
+async def cambiar_saludo(interaction: discord.Interaction, saludo_param: str):
+    global saludo
+    saludo = saludo_param
+    await interaction.response.send_message(f"Saludo actualizado a: {saludo}", ephemeral=True)
+
+async def cambiar_saludo(interaction: discord.Interaction, saludo_param: str):
+    global saludo
+    saludo = saludo_param
+    await interaction.response.send_message(f"saludo de los cojoncillos actualizado a: {saludo}", ephemeral=True)
 
 # 67
 @bot.event

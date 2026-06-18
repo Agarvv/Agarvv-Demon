@@ -2,5 +2,3 @@ discord.py
 python-dotenv
 flask
 schedule
-openai
-detoxify

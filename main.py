@@ -78,6 +78,7 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
+    print("pofkjdja")
     if saludo == "":
         await general_channel.send(f"¡Bienvenidx {member.mention} al servidor, pasala de puta madre y no olvides beber agua y nunca tomar acido sulfurico bajo ningun concepto, y que karlita te acompanie en todas tus acciones. (saludenlx todos, o os cojo.)")
     else:

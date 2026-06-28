@@ -72,17 +72,26 @@ async def on_ready():
     await bot.tree.sync()
 
     if general_channel:
-        await general_channel.send("De parte de Agarvv: os recuerdo que algun dia, sin que os deis cuenta, os robare las ventanas.")
+        await general_channel.send("hola darle un besito en la frente al hijito de agarvv porfa ñiñiñiñiñiiiii :heart_eyes_cat: ")
     else:
         print("not general channel")
 
 @bot.event
 async def on_member_join(member):
     print("pofkjdja")
+    
     if saludo == "":
-        await general_channel.send(f"¡Bienvenidx {member.mention} al servidor, pasala de puta madre y no olvides beber agua y nunca tomar acido sulfurico bajo ningun concepto, y que karlita te acompanie en todas tus acciones. (saludenlx todos, o os cojo.)")
+        await general_channel.send(
+            f"Bienvenidx {member.mention}! ♡\n"
+            "◜ ͡ ◝ Gracias por unirte a nuestra comunidad 𐚁̸\n"
+            "Lee las normas y Verifícate  𓎟𓎟 　ৎ ݂ ݁\n"
+            "◟ ͜ ◞ El staff está para ayudarte."
+        )
     else:
-        await general_channel.send(f"¡Bienvenidx {member.mention}, {saludo} ah y, No olvides verificarte en el canal de verificaciones!!!!!")
+        await general_channel.send(
+            f"{member.mention}\n"
+            f"{saludo}"
+        )
 
 @bot.event
 async def on_message(msg):

@@ -102,11 +102,11 @@ async def on_message(msg):
         
         return
 
-    if message.channel.id == 890963484181954610:
+    if msg.channel.id == 890963484181954610:
         
         send = ""
 
-    for c in message.content:
+    for c in msg.content:
         
         if c in replace:
             
@@ -114,8 +114,8 @@ async def on_message(msg):
         else:
             send += c
 
-    await message.reply(send)
-            
+    await msg.reply(send)
+     
                 
         
 

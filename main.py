@@ -72,7 +72,7 @@ async def on_ready():
     await bot.tree.sync()
 
     if general_channel:
-        await general_channel.send("0x6")
+        await general_channel.send("Oh dios mio que buenas estan las patatas fritas")
     else:
         print("not general channel")
 
@@ -98,7 +98,7 @@ async def on_message(msg):
     print("OK msg")
     replace = "aeouáéóúAEOUÁÉÓÚ"
 
-    if message.author.bot:
+    if msg.author.bot:
         
         return
 

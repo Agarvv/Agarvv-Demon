@@ -95,9 +95,29 @@ async def on_member_join(member):
 
 @bot.event
 async def on_message(msg):
-    global s
-    if msg.author.bot:
+    
+    replace = "aeouáéóúAEOUÁÉÓÚ"
+
+    if message.author.bot:
+        
         return
+
+    if message.channel.id == 890963484181954610:
+        
+        send = ""
+
+    for c in message.content:
+        
+        if c in replace:
+            
+            send += "i" if c.islower() else "I"
+        else:
+            send += c
+
+    await message.reply(send)
+            
+                
+        
 
     match msg.content:
         case "ACK":

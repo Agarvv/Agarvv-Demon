@@ -72,7 +72,7 @@ async def on_ready():
     await bot.tree.sync()
 
     if general_channel:
-        await general_channel.send("hola darle un besito en la frente al hijito de agarvv porfa ñiñiñiñiñiiiii :heart_eyes_cat: ")
+        await general_channel.send("0x6")
     else:
         print("not general channel")
 
@@ -95,7 +95,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_message(msg):
-    
+    print("OK msg")
     replace = "aeouáéóúAEOUÁÉÓÚ"
 
     if message.author.bot:

@@ -330,30 +330,27 @@ async def on_message(msg):
             await msg.reply(random.choice(questions_r))
         else:
             await msg.reply(random.choice(vacilones))
-            
+
     if msg.channel.id == 997124912475021462:
-    if "demonio 0x1" in msg.content:
-        
 
-        original = await msg.channel.fetch_message(
-            msg.reference.message_id
-        )
+        if "demonio 0x1" in msg.content:
 
-        send = ""
+            original = await msg.channel.fetch_message(
+                msg.reference.message_id
+            )
 
-        for c in original.content:
+            send = ""
 
-            if c in replace:
-                send += "i" if c.islower() else "I"
-            else:
-                send += c
+            for c in original.content:
 
-        await msg.reply(send)
+                if c in replace:
+                    send += "i" if c.islower() else "I"
+                else:
+                    send += c
 
-    
+            await msg.reply(send)
 
     await bot.process_commands(msg)
-            
-
+    
 keep_alive()
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)

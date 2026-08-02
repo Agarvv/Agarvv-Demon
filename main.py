@@ -523,7 +523,7 @@ async def on_ready():
     await bot.tree.sync()
 
     if general_channel:
-        await general_channel.send("tengo anvre")
+        await general_channel.send("tengo sed")
     else:
         print("not general channel")
 
@@ -580,10 +580,9 @@ async def on_message(msg):
 
         if "?" in msg.content:
             await msg.reply(random.choice(questions_r))
+        
         else:
-            if message.reference.message_id == wlc_id or wlc_id == 0:
-                
-                
+            if message.reference and (message.reference.message_id == wlc_id or wlc_id == 0):
                 
                 await msg.reply(random.choice(vacilones))
                     

@@ -1207,7 +1207,7 @@ periodicos = [
     "tengo hambre pero tambien mucho amor",
     "estoy bien hoy 🩵 gracias papa 🩵, mama 🩷 y mis tios por estar"
 ]
-]
+
 
 
 @tasks.loop(hours=4)

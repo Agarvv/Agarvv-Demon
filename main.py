@@ -532,18 +532,20 @@ async def on_member_join(member):
     print("pofkjdja")
     
     if saludo == "":
-        wlc_id = await general_channel.send(
+        wlc = await general_channel.send(
             f"Bienvenidx {member.mention}! ♡\n"
             "◜ ͡ ◝ Gracias por unirte a nuestra comunidad 𐚁̸\n"
             "Lee las normas y Verifícate  𓎟𓎟 　ৎ ݂ ݁\n"
             "◟ ͜ ◞ El staff está para ayudarte."
         )
+        wlc_id = wlc.id
 
     else:
-        wlc_id = await general_channel.send(
+        wlc = await general_channel.send(
             f"{member.mention}\n"
             f"{saludo}"
         )
+        wlc_id = wlc.id
 
 @bot.event
 async def on_message(msg):

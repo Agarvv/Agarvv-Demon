@@ -583,8 +583,9 @@ async def on_message(msg):
         if "?" in msg.content:
             await msg.reply(random.choice(questions_r))
         
+        #7677
         else:
-            if msg.reference and (msg.reference.message_id == wlc_id or wlc_id == 0):
+            if "wlc" in msg.content.lower():
                 
                 await msg.reply(random.choice(vacilones))
                     

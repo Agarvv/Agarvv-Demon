@@ -581,7 +581,8 @@ async def on_message(msg):
         if "?" in msg.content:
             await msg.reply(random.choice(questions_r))
         else:
-            if message.reference.message_id == wlc_id:
+            if message.reference.message_id == wlc_id or wlc_id == 0:
+                
                 
                 
                 await msg.reply(random.choice(vacilones))

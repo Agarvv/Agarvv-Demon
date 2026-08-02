@@ -11,6 +11,8 @@ import asyncio
 import re
 import random 
 
+
+
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN')
 
@@ -46,6 +48,8 @@ async def abort(s_param):
 spam_channel = None
 general_channel = None
 s = 0
+
+wlc_id = 0 
 
 vacilones = [
     "no se de lo que me hablas primo preguntale a jaz porfa q yo ni idea tengo no me toques los cojones porfavor o me asegurare de que... nada nada. ignoralo............",
@@ -283,113 +287,214 @@ pegando = [
 
 
 questions_r = [
-    "zi",
-    "no",
-    "ñope",
-    "siiiiicicici",
-    "zi zi zi",
-    "sipi",
-    "sipirili",
-    "sipiruliii",
-    "zi señor",
-    "zi mi rey",
-    "zi mi lord (matenme porfavor me duelen los pies)",
-    "zi definitivamente",
-    "zi al 1000%",
-    "zi pero con lag",
-    "zi pero no kiero",
-    "zi creo",
-    "zi supongo",
-    "zi probablemente",
-    "zi creo k si",
-    "zi confirmado",
-    "zi aprobado por la nasa",
-    "zi aceptado por el consejo",
-    "zi modo dios",
-    "zi ultra zi",
-    "siii",
-    "siiii",
-    "siiiiiiii",
-    "siiiii pero con miedo",
-    "siii claro k zi",
-    "sii bro",
-    "sii maquina",
-    "sii papu",
-    "sii xd",
-    "sii uwu",
-    "sisisisisisi",
-    "sisisi",
-    "sisoy",
-    "seee",
-    "seeeh",
-    "seeeee",
-    "claramente zi",
-    "obvio k zi",
-    "obio zi",
-    "obio k si",
-    "clarisimo bro",
-    "confirmadisimo",
-    "100% zi",
-    "200% zi",
-    "infinito zi",
-    "respuesta positiva.exe",
-    "acepto la mision",
-    "procedo a decir zi",
-
-    "no",
-    "nop",
-    "nopi",
-    "nope",
-    "ño",
-    "ñop",
-    "ñope",
-    "nel",
-    "nelson",
-    "nel pastel",
-    "negativo maquina",
-    "negativo bro",
-    "ni d broma",
-    "ni loco",
-    "ni en sueños",
-    "no k va",
-    "no creo",
-    "no se yo eh",
-    "no confirmado",
-    "rechazado por el consejo",
-    "rechazado por la nasa",
-    "error 404: si no encontrado",
-    "mi respuesta es no.exe",
-    "imposible bro",
-    "eso no pasa los tests",
-    "mi cpu dice no",
-    "mi ram dice no",
-    "mi gato dice no",
-    "mi calculadora dice no",
-    "nope nope nope",
-    "no no no no",
-    "nananai",
-    "nanai del paraguai",
+    "claro bro",
+    "q va tio",
+    "obvio",
     "ni de coña",
-    "ni aunque me paguen",
-    "paso totalmente",
+    "zi",
+    "nop",
+    "sip bro",
+    "negativo jefe",
+    "confirmo",
+    "rechazado",
+    "efectivamente",
+    "para nada",
+    "diria q si",
+    "diria q no",
+    "creo q si",
+    "creo q no",
+    "probablemente si",
+    "probablemente no",
+    "literalmente si",
+    "literalmente no",
+    "bro si",
+    "bro no",
+    "se",
+    "nah",
+    "ya tu sabe q si",
+    "ya tu sabe q no",
+    "confirmadisimo",
     "cancelado",
-    "rechazado elegantemente",
+    "acepto",
+    "paso",
+    "100% si",
+    "100% no",
+    "si supongo",
+    "no creo",
+    "puede q si",
+    "puede q no",
+    "a mi me sale q si",
+    "a mi me sale q no",
+    "mi neurona voto si",
+    "mi neurona voto no",
+    "mi ultima neurona dijo q si",
+    "mi ultima neurona dijo q no",
+    "el calculo dice si",
+    "el calculo dice no",
+    "la tostadora confirma q si",
+    "la tostadora dice q no",
+    "mi cerebro hizo click en si",
+    "mi cerebro hizo click en no",
+    "respuesta oficial: si",
+    "respuesta oficial: no",
+    "despues de analizar 0 segundos digo q si",
+    "despues de pensar absolutamente nada digo q no",
+    "si bro tampoco era tan dificil",
+    "no bro ni aunque me paguen",
+    "sip supongo",
+    "nop rotundo",
+    "claramente si",
+    "claramente no",
+    "obvio q si loco",
+    "obvio q no loco",
+    "eso es un si",
+    "eso es un no",
+    "mi voto es si",
     "mi voto es no",
-    "la ecuacion da no",
-    "la fisica dice no",
-    "el universo dice no",
-    "Schrodinger dice k es no y si a la vez",
-    "depende xd",
-    "tal vez",
-    "quizas",
-    "puede ser",
-    "50% zi 50% no",
-    "mi cerebro esta cargando",
-    "pregunta dificil bro",
-    "necesito mas ram mental",
-    "procesando respuesta...",
-    "resultado: ni idea",
+    "aceptado por la junta de vagos",
+    "denegado por el consejo del sueño",
+    "la respuesta es si y ya",
+    "la respuesta es no y punto",
+    "si porque si",
+    "no porque no",
+    "si loco",
+    "no loco",
+    "va si",
+    "va no",
+    "ta si",
+    "ta no",
+    "creo q mi alma dice si",
+    "creo q mi alma dice no",
+    "mi espiritu dijo si",
+    "mi espiritu dijo no",
+    "el servidor responde si",
+    "el servidor responde no",
+    "codigo 200: si",
+    "error 404: no encontrado pero no",
+    "se acepta",
+    "se rechaza",
+    "doy permiso",
+    "quito permiso",
+    "firmado: si",
+    "firmado: no",
+    "aprobado por mi gato imaginario",
+    "rechazado por una patata",
+    "segun mis datos inventados es si",
+    "segun mis datos inventados es no",
+    "si seguramente bro",
+    "no seguramente bro",
+    "yo diria q si pero q se yo",
+    "yo diria q no pero q se yo",
+    "mi respuesta final es si",
+    "mi respuesta final es no",
+    "si y no preguntes mas",
+    "no y no preguntes mas",
+        "jaz dijo q si asi q yo no discuto",
+    "jaz lonjas mortales acaba de votar q no",
+    "tito levanto la mano y dijo si",
+    "tito con su ultima neurona confirma q si",
+    "daniel dice q no pero seguro se equivoco",
+    "hasiel reviso los datos y salio q si",
+    "tado femboy voto no en la reunion",
+    "alba dijo si y se fue corriendo",
+    "anne confirmo q si con una mirada",
+    "bibi dijo q no y desaparecio",
+    "karlita la owner ha decidido q si",
+    "karlita cerro la encuesta y gano el si",
+    "agarvv el roba cobre dice q si mientras roba cables",
+    "agarvv tetillas hinchadas con helio confirma q no",
+    "jaz but oscura responde q si desde las sombras",
+    "jaz lonjas mortales no aprueba esto",
+    "tito calculo durante 3 segundos y dijo si",
+    "daniel abrio una hoja de calculo y pone no",
+    "hasiel tiro una moneda y salio si",
+    "tado pregunto al universo y dijo no",
+    "alba lo penso mucho y dijo si",
+    "anne consulto al wifi y salio no",
+    "bibi uso magia negra y saco si",
+    "karlita tiene la ultima palabra y es no",
+    "agarvv programo una respuesta y pone si",
+    "agarvv rompio el servidor asi q ahora es no",
+    "jaz dice si pero jaz lonjas mortales dice no",
+    "tito y daniel pelearon y gano el si",
+    "hasiel y tado hicieron una encuesta rara y salio no",
+    "alba confirma si con sello oficial",
+    "anne ha firmado el documento del no",
+    "bibi envio un mensaje diciendo si",
+    "karlita acaba de aprobar el si nivel dios",
+    "agarvv robo la respuesta correcta y era si",
+    "jaz perdio la contraseña del si",
+    "tito encontro el boton de no",
+    "daniel dice q probablemente si aunque nadie pregunto",
+    "hasiel actualizo el sistema y ahora es no",
+    "tado femboy fue consultado y dijo si",
+    "jaz but oscura aparecio y dijo no",
+    "alba esta de acuerdo con el si",
+    "anne esta en modo no hoy",
+    "bibi ha hablado y es si",
+    "karlita ha lanzado la moneda: no",
+    "agarvv el roba cobre no sabe pero dice si",
+    "agarvv esta ocupado robando cobre asi q no responde",
+    "jaz lonjas mortales analiza la situacion y dice si",
+    "tito tiene hambre pero voto no",
+    "daniel trajo una respuesta: si",
+    "hasiel rompio la calculadora y salio no",
+    "tado pregunto a un pato y salio si",
+    "alba dice no pero con cariño",
+    "anne dice si con 0 pruebas",
+    "bibi dice no con demasiada confianza",
+    "karlita activo el modo si",
+    "karlita desactivo el modo si ahora es no",
+    "agarvv intento hacer ping a la respuesta y era si",
+    "jaz me dijo q respondiera no",
+    "tito me amenazo con una chancla para decir si",
+    "daniel me paso un papel q pone no",
+    "hasiel hizo magia de servidor y salio si",
+    "tado femboy saco un dado y fue no",
+    "alba pregunto al gato y dijo si",
+    "anne pregunto al router y dijo no",
+    "bibi saco una respuesta del sombrero: si",
+    "karlita reviso todo y dijo no",
+    "agarvv compilo la respuesta y funciona: si",
+    "agarvv tuvo un segmentation fault y salio no",
+    "jaz lonjas mortales esta de acuerdo con el si",
+    "jaz but oscura esta en contra del no bueno no se",
+    "tito dice si porque tito siempre dice si",
+    "daniel dice no porque le gusta complicar todo",
+    "hasiel voto si con una patata",
+    "tado voto no con una tostadora",
+    "alba certifica q es si",
+    "anne certifica q es no",
+    "bibi tiene una teoria y es si",
+    "karlita manda y dice no",
+    "agarvv robo mi respuesta y era si",
+    "agarvv escondio la respuesta correcta: no",
+    "jaz ha hablado, silencio, es si",
+    "tito acaba de despertar y dice no",
+    "daniel sigue buscando la respuesta pero parece si",
+    "hasiel encontro un bug y cambio a no",
+    "tado hizo una encuesta entre palomas y gano si",
+    "alba uso logica y salio no",
+    "anne uso magia y salio si",
+    "bibi uso una calculadora rota y dio no",
+    "karlita puso una regla nueva: si",
+    "karlita puso otra regla nueva: no",
+    "agarvv mirando cables dice q si",
+    "agarvv mirando cobre dice q no",
+    "jaz lonjas mortales confirma con violencia q si",
+    "tito confirma con sueño q no",
+    "daniel responde si pero nadie sabe pq",
+    "hasiel responde no en binario",
+    "tado femboy dice si en idioma extraño",
+    "alba manda un 👍 y es si",
+    "anne manda un ❌ y es no",
+    "bibi manda un mensaje de voz diciendo si",
+    "karlita pulsa el boton: no"
 ]
+
+
+
+
 
 
 @bot.tree.command(name="saludo_bienvenida", description="Cambia el saludo q el bot de mierda hara :v")
@@ -427,14 +532,15 @@ async def on_member_join(member):
     print("pofkjdja")
     
     if saludo == "":
-        await general_channel.send(
+        wlc_id = await general_channel.send(
             f"Bienvenidx {member.mention}! ♡\n"
             "◜ ͡ ◝ Gracias por unirte a nuestra comunidad 𐚁̸\n"
             "Lee las normas y Verifícate  𓎟𓎟 　ৎ ݂ ݁\n"
             "◟ ͜ ◞ El staff está para ayudarte."
         )
+
     else:
-        await general_channel.send(
+        wlc_id = await general_channel.send(
             f"{member.mention}\n"
             f"{saludo}"
         )
@@ -465,22 +571,21 @@ async def on_message(msg):
 
     if match_obj:
         username = match_obj.group(1)
-        protected = ("agarv", "agarvv", "agar", "garv")
+        
+        stri = random.choice(pegando)
 
-        if username.lower() in protected:
-            await msg.channel.send("ño ño ñooo a papi no le pego >w<")
-            return
-
-        await msg.channel.send(f"Pum pum {username} serda guarrindonga mala uwu")
+        await msg.channel.send(f"{stri}{username}")
 
     if bot.user in msg.mentions:
 
         if "?" in msg.content:
             await msg.reply(random.choice(questions_r))
         else:
-            if message.content == "":
+            if message.reference.message_id == wlc_id:
+                
                 
                 await msg.reply(random.choice(vacilones))
+                    
 
     if msg.channel.id == 997124912475021462:
 

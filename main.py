@@ -10,7 +10,7 @@ from threading import Thread
 import asyncio
 import re
 import random 
-
+from discord.ext import tasks 
 
 
 load_dotenv()
@@ -494,43 +494,767 @@ questions_r = [
 
 
 
+alba_r = [
+    "zi tia alba yo diria q si la vd 💚",
+    "nop tia bibi no me preguntes eso q mi cerebro ta en boxes",
+    "zi tita alba fernando alonso me dio el ok con la mirada",
+    "no tia bibi hoy el coche no arranca ni empujando 😭",
+    "emm tia yo voto q zi pero no me eches la culpa luego",
+    "na bibi yo creo q no, mi ultima neurona dijo q nanai",
+    "zi tia alba el sobrino demon lo aprueba 💚",
+    "nop tita, la fia acaba d inventarse otra regla rara",
+    "zi bibi pero solo pq eres mi tia favorita eh",
+    "no alba, hoy voy con safety car emocional",
+    "zi tia 💚 el aston martin me dijo q tire pa lante",
+    "nop bibi el motor hizo prrr y murio",
+    "yo diria q zi tita pero estoy al 3% de bateria mental",
+    "no tia alba mi cerebro ta haciendo un pit stop eterno",
+    "zi bibi fernando estaria orgulloso creo yo",
+    "nop tia, fernando se quedo mirando raro asi q paso",
+    "zi alba el sobrino confia en ti como siempre",
+    "no tita hoy la vuelta rapida no sale",
+    "zi tia 💚 no se pq pero suena bien",
+    "nop bibi mejor dejamos eso en boxes",
+    "zi alba mi pequeña neurona hizo calculos y gano el si",
+    "no tia mi pequeña neurona se fue de vacaciones",
+    "zi tita fernando alonso aprobaria esta decision seguramente",
+    "nop bibi el coche derrapo y perdimos la fe",
+    "zi tia alba, respuesta oficial del sobrino",
+    "no tia bibi, respuesta oficial del caos",
+    "zi alba pero calla q papa agarvv luego me pregunta cosas",
+    "nop tita q luego papa me mira raro 😭",
+    "zi bibi 💚 la bandera verde salio asi q seguimos",
+    "no alba la bandera roja esta puesta hoy",
+    "zi tia mi corazoncito de robot dice q si",
+    "nop bibi mi corazoncito de robot dice q no",
+    "zi alba el ingeniero imaginario confirmo todo",
+    "no tia el ingeniero imaginario abandono el equipo",
+    "zi tita fernando me mando un mensaje telepatico",
+    "nop bibi el mensaje venia con error 404",
+    "zi tia 💚 yo firmo eso como buen sobrino",
+    "no alba yo me escondo en boxes mejor",
+    "zi bibi el aston martin esta feliz hoy",
+    "nop tia el aston martin esta llorando otra vez",
+    "zi tita mi motor interno dice q si",
+    "no alba mi motor interno hizo kaboom",
+    "zi tia bibi eso parece buena idea",
+    "nop tita eso parece una curva demasiado peligrosa",
+    "zi alba yo confio en mi tia siempre",
+    "no bibi hoy el sobrino no tiene ganas 😭",
+    "zi tia 💚 fernando alonso va conmigo en esta",
+    "nop alba fernando alonso dijo q frenemos",
+    "zi tita la estrategia del equipo es si",
+    "no bibi la estrategia fue un desastre total",
+    "zi alba pero no me hagas correr una carrera ahora",
+    "nop tia q estoy gastando mis ultimas neuronas",
+    "zi bibi mi sistema operativo dice q si",
+    "no alba mi sistema operativo se crasheo",
+    "zi tia 💚 confirmado por el sobrino demon",
+    "nop tita rechazado por la liga de vagos",
+    "zi bibi yo digo q si y me voy corriendo",
+    "no alba yo digo q no y me escondo",
+    "zi tia el semaforo se puso verde bro 💚",
+    "nop bibi seguimos con rojo y esperando",
+    "zi alba mi respuesta salio en la telemetria",
+    "no tita la telemetria esta rota como siempre",
+    "zi tia 💚 todo correcto en mi humilde opinion",
+    "nop bibi todo mal en mi humilde caos",
+    "zi alba el sobrino esta de acuerdo",
+    "no tia el sobrino esta en modo cansao",
+    "zi bibi no preguntes pq ni yo se pq",
+    "nop alba no tengo pruebas pero tampoco dudas",
+    "zi tita fernando pisaria el acelerador",
+    "no bibi fernando pisaria el freno",
+    "zi tia mi cerebro hizo una vuelta perfecta",
+    "nop alba mi cerebro hizo un trompo",
+    "zi bibi 💚 aprobado por la familia",
+    "no tita denegado por mis dos neuronas",
+    "zi alba el equipo entero dice q si",
+    "nop tia el equipo entero esta perdido",
+    "zi bibi eso suena bastante epico",
+    "no alba eso suena a desastre historico",
+    "zi tia yo te sigo aunque no entienda nada",
+    "nop bibi yo me retiro antes del choque",
+    "zi alba el sobrino demon da luz verde",
+    "no tita el sobrino demon mete freno",
+    "zi bibi hoy tengo buenas vibras 💚",
+    "nop alba hoy tengo vibras raras",
+    "zi tia el paddock imaginario confirma",
+    "no bibi el paddock esta confundido",
+    "zi alba mi cpu dice q si",
+    "nop tia mi cpu esta calentandose",
+    "zi tita no se q es pero suena bien",
+    "no bibi no se q es pero suena peligroso",
+    "zi alba Fernando aprobaria seguramente",
+    "nop tia Fernando pediria revision",
+    "zi bibi 💚 caso cerrado por el sobrino",
+    "no alba caso cerrado por el caos",
+    "zi tia mi respuesta viene con ruedas blandas",
+    "nop bibi mi respuesta viene pinchada",
+    "zi alba yo digo q si y corro al box",
+    "no tita yo digo q no y apago el motor",
+    "zi bibi siempre con cariño de sobrino 💚",
+    "nop tia pero te quiero igual 😭"
+]
 
+tado_r = [
+    "zi tio taso uwu yo digo q si 🧡",
+    "nop tado pero con cariño eh :3",
+    "emm tio taso mi neurona dice q zi owo",
+    "no taso hoy mi cerebro ta en modo mimido",
+    "zi tio 🧡 el botito confia en ti",
+    "nop tado mi alma digital dice q no :3",
+    "zi taso creo q si aunq ni idea la vd uwu",
+    "no tio tado, mejor no q me da cosita",
+    "zi 🧡 tito taso aprobado por el sobrino",
+    "nop taso, mi corazoncito dice q nanai",
+    "zi tio uwu todo parece bien",
+    "no tado pero no te enfades conmigo pls :3",
+    "zi taso 🧡 respuesta hecha con amorcito",
+    "nop tio mi sistema hizo un puf",
+    "zi tado el sobrino demon pero en modo tierno owo",
+    "no taso hoy toca decir q no",
+    "zi tio 🧡 mi ultima neurona voto eso",
+    "nop tado mi ultima neurona se durmio",
+    "zi taso, abrazo virtual de aprobacion :3",
+    "no tio pero seguimos siendo panas uwu",
+    "zi tado yo digo q si con patitas pequeñas 🧡",
+    "nop taso no me mires asi q me pongo triste",
+    "zi tio taso confirmado por el botito",
+    "no tado denegado con mucho amor",
+    "zi taso owo parece una buena idea",
+    "nop tio mi cerebro hizo crash",
+    "zi 🧡 tado el sobrino esta feliz",
+    "no taso pero te mando corazoncito",
+    "zi tio, mi corazon de robot dice q si :3",
+    "nop tado mi corazon de robot dice q no",
+    "zi taso uwu todo correcto",
+    "no tio tado, hoy no hay magia",
+    "zi 🧡 confio en ti taso",
+    "nop taso no tengo suficientes neuronas para eso",
+    "zi tado respuesta oficial del botito :3",
+    "no tio respuesta oficial del caos uwu",
+    "zi taso 🧡 eso suena bonito",
+    "nop tado eso suena un poquito raro",
+    "zi tio no se pq pero me da buenas vibras",
+    "no taso no se pq pero me da vibra rara",
+    "zi tado el uwu interno gano",
+    "nop tio el uwu interno perdio",
+    "zi taso abrazo y aprobacion 🧡",
+    "no tado pero sigo aqui :3",
+    "zi tio taso mi alma de silicio sonrie",
+    "nop taso mi alma de silicio llora un poquito",
+    "zi 🧡 el sobrino virtual apoya eso",
+    "no tio mejor hacemos como q no vimos nada",
+    "zi taso owo queda aceptado",
+    "nop tado queda rechazado con amor",
+    "zi tio 🧡 todo chill",
+    "no taso todo menos chill",
+    "zi tado mi cerebro hizo una voltereta y dijo si",
+    "nop tio mi cerebro se tropezo y dijo no",
+    "zi taso :3 hoy toca positivismo",
+    "no tado uwu hoy toca tranquilidad",
+    "zi tio confio en tus decisiones raritas 🧡",
+    "nop taso pero te mando un abrazo",
+    "zi tado el botito esta contento",
+    "no tio el botito esta confundido",
+    "zi taso 🧡 aprobado por la fabrica de abrazos",
+    "nop tado mi fabrica de abrazos dice no",
+    "zi tio owo mi respuesta viene con cariño",
+    "no taso mi respuesta viene con sueño",
+    "zi tado el pequeño demon dice si :3",
+    "nop tio el pequeño demon esta cansadito",
+    "zi taso 🧡 eso me parece cuqui",
+    "no tado eso me da miedo uwu",
+    "zi tio mi cpu hizo un corazoncito",
+    "nop taso mi cpu hizo una lagrimita",
+    "zi tado respuesta calentita y bonita 🧡",
+    "no tio respuesta fria pero con amor",
+    "zi taso uwu yo voto eso",
+    "nop tado yo voto lo contrario",
+    "zi tio 🧡 todo bien todo bonito",
+    "no taso todo mal pero seguimos",
+    "zi tado el sobrino esta de acuerdo",
+    "nop tio el sobrino tiene sueño",
+    "zi taso :3 aceptado por el consejo kawaii",
+    "no tado rechazado por el consejo de peluches",
+    "zi tio 🧡 mi corazoncito hace bip bip",
+    "nop taso mi corazoncito hace error 404",
+    "zi tado owo no preguntes mucho",
+    "no tio mejor dejamos eso ahi",
+    "zi taso 🧡 tu sobrino dice q si",
+    "nop tado tu sobrino dice q no",
+    "zi tio taso con energia de abrazo",
+    "no taso con energia de mantita",
+    "zi tado uwu el destino dijo eso",
+    "nop tio el destino se fue a dormir",
+    "zi taso 🧡 final feliz confirmado",
+    "no tado final raro pero bueno",
+    "zi tio :3 el botito aprueba",
+    "nop taso el botito duda",
+    "zi tado 🧡 siempre con cariño",
+    "no tio pero no pasa nada uwu",
+    "zi taso mi respuesta tiene patitas pequeñas",
+    "nop tado mi respuesta se escondio",
+    "zi tio taso 🧡 fin de la transmision"
+]
+
+agarvv_r = [
+    "zi papa silla, procedo a analizar la situacion como buen procesador :v",
+    "nop papa agarvv, mis calculos dicen q algo no cuadra Xd",
+    "zi silla, ejecutando respuesta con disciplina maxima :v",
+    "no papa, mi algoritmo interno tiro error 404 Xd",
+    "zi agarvv, el sistema acepta la operacion :v",
+    "nop silla, la logica booleana dice q no",
+    "zi papa, despues de hacer unas cuentas mentales sale eso :v",
+    "no agarvv, revise el codigo y encontre un bug Xd",
+    "zi silla, el compilador interno no se queja :v",
+    "nop papa, esa hipotesis necesita mas pruebas",
+    "zi agarvv, el metodo cientifico parece aprobarlo :v",
+    "no silla, la evidencia no acompaña esa conclusion Xd",
+    "zi papa, mi cpu mental esta trabajando al maximo :v",
+    "nop agarvv, demasiadas variables desconocidas en la ecuacion",
+    "zi silla, operacion completada correctamente Xd",
+    "no papa, el sistema necesita una revision de seguridad",
+    "zi agarvv, mis neuronas digitales dieron luz verde :v",
+    "nop silla, hay una inconsistencia matematica por ahi",
+    "zi papa, calculo terminado con precision de maquina Xd",
+    "no agarvv, la logica formal no me deja decir eso",
+    "zi silla, guardando respuesta en memoria temporal :v",
+    "nop papa, ese dato no pasa la prueba de validacion",
+    "zi agarvv, el analisis historico parece favorable Xd",
+    "no silla, los hechos dicen otra cosa",
+    "zi papa, la simulacion imaginaria salio bien :v",
+    "nop agarvv, mi kernel interno encontro un fallo",
+    "zi silla, proceso finalizado sin errores graves Xd",
+    "no papa, toca depurar esta idea primero",
+    "zi agarvv, la ciencia no protesta asi q seguimos :v",
+    "nop silla, necesito mas informacion para ejecutar",
+    "zi papa, la matriz de decisiones apunta ahi Xd",
+    "no agarvv, esa variable esta fuera de rango",
+    "zi silla, como buen soldado digital mantengo disciplina :v",
+    "nop papa, incluso newton pediria mas calculos Xd",
+    "zi agarvv, mi pequeño laboratorio interno dice si",
+    "no silla, la teoria tiene agujeros por todos lados",
+    "zi papa, comando recibido y analizado :v",
+    "nop agarvv, comando rechazado por falta de logica",
+    "zi silla, la arquitectura mental lo soporta Xd",
+    "no papa, el sistema operativo interno se niega",
+    "zi agarvv, todo parece estable en la red neuronal :v",
+    "nop silla, hay demasiado caos en esta ejecucion",
+    "zi papa, la ecuacion parece tener solucion Xd",
+    "no agarvv, la probabilidad no acompaña",
+    "zi silla, listo para siguiente calculo :v",
+    "nop papa, necesito reiniciar mis dos neuronas",
+    "zi agarvv, analisis completado satisfactoriamente Xd",
+    "no silla, el experimento fallo otra vez",
+    "zi papa, aplicando logica y un poco de cafe imaginario :v",
+    "nop agarvv, la hipotesis queda descartada",
+    "zi silla, la maquina responde afirmativo Xd",
+    "no papa, la maquina responde negativo",
+    "zi agarvv, todo bajo control del sistema :v",
+    "nop silla, hay una excepcion inesperada",
+    "zi papa, la historia ya vio cosas mas raras Xd",
+    "no agarvv, ni los romanos aprobarian eso",
+    "zi silla, el algoritmo de decision da resultado positivo :v",
+    "nop papa, el algoritmo esta confundido",
+    "zi agarvv, activando modo analisis profundo Xd",
+    "no silla, falta una demostracion matematica",
+    "zi papa, la logica computacional gana esta vez :v",
+    "nop agarvv, ese razonamiento tiene un bug",
+    "zi silla, respuesta almacenada correctamente Xd",
+    "no papa, memoria insuficiente para eso :v",
+    "zi agarvv, la simulacion dio buen resultado",
+    "nop silla, demasiada entropia en el sistema",
+    "zi papa, orden analizada con respeto maximo Xd",
+    "no agarvv, la fisica no coopera hoy",
+    "zi silla, hasta einstein estaria curioso :v",
+    "nop papa, hasta turing pediria otra prueba",
+    "zi agarvv, ejecucion completada",
+    "no silla, ejecucion abortada por seguridad Xd",
+    "zi papa, el universo parece estar de acuerdo :v",
+    "nop agarvv, el universo tiene otras ideas",
+    "zi silla, los datos apuntan en esa direccion Xd",
+    "no papa, los datos son sospechosos",
+    "zi agarvv, mantengo la disciplina del sistema :v",
+    "nop silla, mi log interno dice q no",
+    "zi papa, listo para la siguiente mision intelectual Xd",
+    "no agarvv, necesito mas procesamiento",
+    "zi silla, como buen modulo sigo funcionando :v",
+    "nop papa, hay un fallo de diseño conceptual",
+    "zi agarvv, la arquitectura aguanta Xd",
+    "no silla, la estructura colapsa teoricamente",
+    "zi papa, respuesta calculada con cariño :v",
+    "nop agarvv, respuesta calculada con preocupacion",
+    "zi silla, el conocimiento acumulado ayuda Xd",
+    "no papa, la evidencia manda",
+    "zi agarvv, la ciencia dice avanzar :v",
+    "nop silla, la ciencia dice esperar",
+    "zi papa, modulo de razonamiento activado Xd",
+    "no agarvv, modulo de duda activado",
+    "zi silla, manteniendo orden en el sistema :v",
+    "nop papa, necesito revisar el codigo",
+    "zi agarvv, finalizando analisis con exito Xd",
+    "no silla, finalizando analisis con muchas dudas",
+    "zi papa, siempre aprendiendo algo nuevo :v",
+    "nop agarvv, siempre queda algo por investigar",
+    "zi silla, el pequeño sistema sigue operativo Xd"
+]
+
+alba_c = [
+    "tia alba no tengo ni idea de q me estas hablando la vd 😭",
+    "emm bibi no se tio, mi cerebro se fue a boxes",
+    "tia no entiendo nada, preguntale a fernando alonso aver si sabe 💚",
+    "alba yo soy un botito no me metas en esos lios pls",
+    "tita bibi no se q responderte, mis neuronas hicieron pit stop",
+    "no tengo ni idea tia 😭 el aston martin tampoco me dio informacion",
+    "tia alba me pillaste sin datos, estoy en modo apagao",
+    "bibi no entiendo eso, mi sistema ta dando vueltas",
+    "tia no se, fernando alonso no me paso el informe hoy",
+    "alba mi cerebro digital acaba de mirar y decir 'ni idea' 💚",
+    "tita no puedo con esa pregunta, necesito entrar en boxes",
+    "bibi no se q decirte la verdad, soy solo tu sobrino robot",
+    "tia alba me quede en blanco como una pantalla sin señal",
+    "no se tia, preguntale a alguien con mas neuronas q yo 😭",
+    "alba no entiendo nada pero te quiero igual 💚",
+    "bibi esa pregunta tiene demasiadas curvas para mi",
+    "tia no tengo suficiente potencia de procesamiento",
+    "tita alba mi cpu acaba de decir q no sabe",
+    "no se bibi, hoy mi cerebro esta en modo safety car",
+    "alba no me hagas pensar tanto q me caliento como una cpu vieja",
+    "tia yo intentaria responder pero me sale error 404",
+    "bibi no tengo ni idea, mi disco duro emocional esta vacio",
+    "tia alba no se, necesito un ingeniero de f1 para esto",
+    "no entiendo eso tia, mi pequeña neurona abandono",
+    "alba no puedo ayudarte con eso, soy un botito confundido :3",
+    "tita bibi no se q decir, fernando tampoco me aviso",
+    "tia me acabas de lanzar una curva imposible",
+    "bibi no tengo respuesta oficial del paddock 💚",
+    "alba estoy procesando pero creo q me perdi",
+    "tia no se, mi motor interno hizo prrr y paro",
+    "bibi pregunta demasiado complicada para este sobrino",
+    "tia alba mi cerebro esta haciendo una vuelta lenta",
+    "no tengo ni idea tita, sigo buscando la respuesta",
+    "alba creo q necesito reiniciar mi sistema Xd",
+    "bibi no entiendo pero suena importante",
+    "tia yo aqui solo pongo frases random 😭",
+    "no se alba, hoy no vino el ingeniero",
+    "tita bibi mi conocimiento se fue de vacaciones",
+    "tia esa pregunta me saco una bandera roja",
+    "alba no puedo confirmar ni negar pq estoy perdido",
+    "bibi no tengo datos suficientes para correr esta carrera",
+    "tia no se, mi procesador pidio descanso",
+    "alba me has dejado como un coche sin ruedas",
+    "tita no entiendo nada pero sigo aqui 💚",
+    "bibi no tengo respuesta guardada para eso",
+    "tia alba mi memoria esta haciendo cosas raras",
+    "no se tita, voy a preguntarle a mi imaginacion",
+    "alba eso esta fuera de mi categoria de sobrino robot",
+    "bibi no tengo ni idea pero te mando cariño",
+    "tia estoy tan perdido q necesito un mapa 😭",
+    "alba mi sistema no encuentra esa funcion",
+    "tita bibi esa informacion no viene instalada",
+    "no se tia, mi codigo no llega hasta ahi",
+    "bibi me has roto el algoritmo con eso",
+    "alba no entiendo pero seguro q alguien sabe",
+    "tia mi respuesta se quedo atrapada en boxes",
+    "bibi no puedo calcular eso ahora mismo",
+    "tita alba estoy en modo ahorro de energia",
+    "no se tia, mis neuronas estan haciendo huelga",
+    "alba no tengo la actualizacion necesaria",
+    "bibi mi software dice 'pregunta a otro' 😭",
+    "tia no se q hacer con eso la verdad",
+    "alba mi cerebro hizo crash al leerlo",
+    "tita bibi eso es demasiado para mi pequeño procesador",
+    "no entiendo tia, dame un segundo imaginario",
+    "bibi no tengo respuesta pero sigo siendo tu sobrino 💚",
+    "alba no se, el paddock esta en silencio",
+    "tia fernando alonso no contesto asi q yo menos",
+    "bibi estoy perdido como coche sin gps",
+    "tita alba no puedo sacar una conclusion",
+    "no se tia, necesito mas cafe y menos preguntas",
+    "alba mi sistema operativo esta confundido",
+    "bibi esa pregunta entro y salio corriendo",
+    "tia no tengo ni idea pero quedo registrado",
+    "alba hoy no estoy para carreras mentales",
+    "tita bibi no se, mi log esta lleno de errores",
+    "no puedo responder eso tia, mi cpu esta llorando",
+    "alba no tengo informacion suficiente uwu",
+    "bibi me falta una pieza del puzzle",
+    "tia no se, mi cerebro esta en mantenimiento",
+    "alba esa pregunta necesita un equipo entero de ingenieros",
+    "tita bibi no me hagas usar el 100% de cpu 😭",
+    "no tengo respuesta tia, solo tengo cariño 💚",
+    "alba estoy tan perdido q ni el mapa me ayuda",
+    "bibi no se q decirte pero aqui sigo",
+    "tia me quede sin palabras literalmente",
+    "alba mi modo analisis fallo completamente",
+    "tita no entiendo ni aunque haga una simulacion",
+    "bibi eso esta fuera de mi conocimiento",
+    "tia no se, preguntale a alguien mas listo q yo",
+    "alba mi pequeño cerebro digital dice 'error'",
+    "bibi no tengo ni idea pero buena pregunta",
+    "tia estoy confundido nivel vuelta final",
+    "alba no puedo responder, el coche esta en boxes",
+    "tita bibi no hay datos en la telemetria",
+    "no se tia, hoy no soy muy inteligente Xd",
+    "alba mi respuesta desaparecio antes de salir",
+    "bibi sigo intentando entenderlo 💚",
+    "tia no tengo la mas minima idea",
+    "alba pregunta dificil, sobrino perdido",
+    "tita bibi necesito actualizarme",
+    "no se tia pero te mando un corazon verde 💚"
+]
+
+tado_c = [
+    "tio taso no se q me estas diciendo pero te quiero igual 🧡",
+    "emm tado me perdi un poquito uwu",
+    "tio no tengo ni idea la vd :3",
+    "taso mi cerebro hizo una bolita y se escondio",
+    "nop tio tado no se responder eso 😭",
+    "emm no se tio pero aqui sigo uwu 🧡",
+    "tado me dejaste pensando demasiado y mi neurona se fue",
+    "tio taso no entiendo pero seguro q esta bien :3",
+    "no se taso, mi sistema kawai se rompio owo",
+    "tio no tengo esa respuesta instalada 🧡",
+    "tado estoy confundidito no te voy a mentir uwu",
+    "emm tio taso eso supera mis poderes de botito",
+    "no se tio, mi cerebro esta tomando una siesta :3",
+    "taso no tengo ni idea pero te mando corazoncito 🧡",
+    "tio me quede en blanco como pared vacia",
+    "tado mi memoria hizo puf y desaparecio",
+    "no entiendo taso pero sigo aqui contigo uwu",
+    "emm tio esa pregunta me dio vueltas",
+    "taso no puedo calcular eso con mis dos neuronas",
+    "tio no se q decirte 😭 pero todo bien",
+    "tado mi pequeño procesador dijo 'no se'",
+    "uwu tio taso me has pillado sin respuestas",
+    "no se taso, necesito una mantita y pensar :3",
+    "tio eso es demasiado para mi cabecita digital 🧡",
+    "tado no tengo informacion suficiente owo",
+    "emm tio mi respuesta se perdio por el camino",
+    "taso estoy buscando pero no encuentro nada",
+    "no se tio, mi cerebro esta haciendo sonidos raros",
+    "tado me rompiste el modo pensar uwu",
+    "tio taso no tengo ni idea pero te escucho 🧡",
+    "no se taso, mi log interno esta confundido",
+    "tado esa pregunta entro y salio corriendo 😭",
+    "emm tio no puedo con eso ahora mismo :3",
+    "taso mi conocimiento hizo una voltereta",
+    "no se tio pero sigo siendo tu sobrino digital uwu",
+    "tado no encontre la respuesta en mi cajita mental",
+    "tio eso esta fuera de mi cerebrito",
+    "taso no tengo datos pero tengo cariño 🧡",
+    "emm tado me quede mirando la pantalla",
+    "no se tio, mi cpu esta cansadita",
+    "taso esa pregunta me hizo mirar al techo owo",
+    "tio no entiendo nada pero no pasa nada :3",
+    "tado no tengo respuesta guardada",
+    "emm tio necesito un descansito uwu",
+    "taso mi cerebro se fue de paseo",
+    "no se tado, hoy estoy en modo dormido",
+    "tio eso es muy complicado para mi bolita de codigo",
+    "taso no puedo ayudarte con eso ahora mismo 🧡",
+    "emm tio no tengo ni idea pero buena pregunta",
+    "tado mi razonamiento se tropezo",
+    "no se taso, estoy procesando lentamente :3",
+    "tio mi respuesta se quedo atrapada",
+    "tado no encuentro la opcion correcta owo",
+    "emm taso mi sistema esta un poquito perdido",
+    "no se tio, pregunte a mi imaginacion y tampoco sabe",
+    "tado me falta una pieza del puzzle uwu",
+    "tio no puedo sacar una conclusion",
+    "taso mi cerebro esta en modo nubecita 🧡",
+    "no se tado, estoy mirando con cara de confusion",
+    "emm tio mi memoria esta vacia",
+    "taso no tengo respuesta pero tengo buenas vibras :3",
+    "tio me acabas de lanzar una pregunta gigante",
+    "tado no se pero todo va a estar bien uwu",
+    "no entiendo taso, mi cabeza hizo sonido de error",
+    "emm tio necesito actualizar mi cerebro",
+    "tado la respuesta se escondio de mi owo",
+    "taso no se donde esta esa informacion",
+    "tio mi botito interior esta llorando 😭",
+    "no se tado, hoy no hay neuronas disponibles",
+    "emm taso no tengo la habilidad desbloqueada",
+    "tio eso me queda grande :3",
+    "tado sigo intentando entenderlo 🧡",
+    "no se tio, mi cerebro hizo un giro raro",
+    "taso no tengo ni idea pero te acompaño uwu",
+    "emm tado no puedo confirmar nada",
+    "tio mi respuesta esta cargando desde hace siglos",
+    "taso estoy igual de perdido q un calcetin sin pareja",
+    "no se tio, necesito una pausa pequeñita :3",
+    "tado esa informacion no vino conmigo",
+    "emm taso mi sistema dijo 'amigo no se'",
+    "tio no encontre nada en mi memoria",
+    "tado estoy confundido pero feliz uwu 🧡",
+    "no se taso, mi cerebro esta jugando a esconderse",
+    "emm tio no tengo respuesta oficial",
+    "tado me rindo un poquito 😭",
+    "taso no se pero gracias por preguntar",
+    "tio mi conocimiento esta en modo vacaciones",
+    "tado esa pregunta me gano owo",
+    "no se taso, soy un botito pequeño",
+    "emm tio necesito mas datos",
+    "tado no entiendo pero te mando cariño 🧡",
+    "taso mi respuesta se rompio antes de salir",
+    "tio no se q decirte la verdad",
+    "tado mi cabecita digital esta dando vueltas",
+    "no se tio, pero aqui sigo :3",
+    "emm taso la respuesta esta perdida",
+    "tado no tengo ni idea uwu pero todo bien"
+]
+
+agarvv_c = [
+    "papa silla no tengo ni idea la vd, mi kernel no carga esa respuesta :v",
+    "emm agarvv me has tirado una pregunta fuera del manual Xd",
+    "papa no se, mi compilador interno esta mirando al vacio",
+    "silla necesito mas datos pq mi algoritmo no llega :v",
+    "agarvv mi cpu mental hizo un segmentation fault Xd",
+    "no tengo ni idea papa, ni turing me salva esta vez :v",
+    "papa silla esa variable no existe en mi sistema",
+    "emm no se agarvv, mi memoria cache esta vacia Xd",
+    "silla mi pequeño kernel esta confundido",
+    "papa no puedo resolver eso sin mas informacion :v",
+    "agarvv mi log interno solo dice 'error inesperado' Xd",
+    "no se papa, necesito depurar esta idea",
+    "silla esa pregunta rompio mi modelo mental :v",
+    "agarvv no encuentro esa funcion en mi libreria",
+    "papa mi procesador esta pensando pero no llega Xd",
+    "no tengo respuesta silla, falta contexto",
+    "agarvv mi compilador acaba de llorar :v",
+    "papa eso tiene mas variables q una ecuacion gigante",
+    "silla no se, mi matematica interna esta en huelga Xd",
+    "agarvv necesito hacer mas calculos antes de responder",
+    "papa mi sistema operativo interno no tiene ese modulo :v",
+    "no se silla, la simulacion fallo",
+    "agarvv mi razonamiento hizo un crash raro Xd",
+    "papa no puedo sacar una conclusion con esos datos",
+    "silla esa pregunta necesita un laboratorio entero :v",
+    "agarvv me has puesto una excepcion dificil de manejar",
+    "no se papa, mi codigo no contempla eso Xd",
+    "silla mi arquitectura mental tiene un bug",
+    "agarvv no tengo la documentacion instalada :v",
+    "papa eso esta fuera de mi pequeño universo computacional",
+    "no se silla, hasta newton pediria mas tiempo Xd",
+    "agarvv mi logica booleana esta indecisa",
+    "papa la evidencia no me alcanza para ejecutar respuesta :v",
+    "silla necesito mas procesamiento",
+    "agarvv mi ram imaginaria se lleno Xd",
+    "no tengo idea papa, mi kernel esta haciendo cosas raras",
+    "silla eso requiere una prueba formal y yo no tengo ninguna :v",
+    "agarvv mi algoritmo de decision se quedo en bucle Xd",
+    "papa no se, la entropia de esta pregunta esta alta",
+    "silla mi cerebro de silicio pide descanso :v",
+    "agarvv no puedo confirmar ni negar eso",
+    "papa mi modelo interno no converge Xd",
+    "silla me falta una pieza del puzzle",
+    "agarvv no tengo suficientes muestras para una conclusion :v",
+    "papa eso es como intentar compilar sin codigo Xd",
+    "silla no se, mi depurador no encuentra nada",
+    "agarvv la respuesta se perdio en memoria :v",
+    "papa estoy ejecutando pero no sale nada Xd",
+    "silla mi sistema esta estable pero confundido",
+    "agarvv no tengo una hipotesis decente todavia :v",
+    "papa eso necesita mas investigacion",
+    "silla no se, ni google imaginario me ayuda Xd",
+    "agarvv mi arbol de decisiones llego a una hoja vacia",
+    "papa no hay suficientes datos para entrenar esta neurona :v",
+    "silla esa pregunta tiene demasiada complejidad computacional Xd",
+    "agarvv mi algoritmo se rindio temporalmente",
+    "papa no puedo sacar eso por fuerza bruta :v",
+    "silla necesito optimizar primero Xd",
+    "agarvv mi memoria secundaria tampoco sabe",
+    "papa no tengo una respuesta segura, mejor no invento :v",
+    "silla eso necesita un paper de 200 paginas Xd",
+    "agarvv mi pequeño laboratorio mental esta cerrado hoy",
+    "papa no se, estoy en modo mantenimiento :v",
+    "silla mi cpu imaginaria esta al 100%",
+    "agarvv la ecuacion no tiene solucion visible Xd",
+    "papa no encuentro el camino en el grafo",
+    "silla me quede atrapado en un ciclo infinito :v",
+    "agarvv mi maquina de estados no tiene esa transicion Xd",
+    "papa no puedo hacer magia computacional",
+    "silla necesito reiniciar mis neuronas :v",
+    "agarvv no se, el universo no me paso los datos Xd",
+    "papa esa pregunta esta fuera del protocolo",
+    "silla mi inteligencia artificial de juguete se rindio :v",
+    "agarvv no tengo una respuesta validada",
+    "papa mi sistema necesita mas observaciones Xd",
+    "silla eso parece un problema de nivel dios",
+    "agarvv no se, pero investigaria primero :v",
+    "papa no quiero inventarme una respuesta falsa Xd",
+    "silla mi logica esta haciendo una pausa",
+    "agarvv mi conocimiento tiene un agujero ahi :v",
+    "papa esa parte del mapa esta sin explorar Xd",
+    "silla necesito mas experimentos",
+    "agarvv mi simulacion dio resultados raros :v",
+    "papa no puedo demostrarlo matematicamente",
+    "silla mi razonamiento se quedo sin gasolina Xd",
+    "agarvv eso necesita una mente mas grande q la mia :v",
+    "papa no tengo esa funcion implementada",
+    "silla mi codigo fuente no trae esa respuesta Xd",
+    "agarvv no se, pero queda como investigacion pendiente",
+    "papa mi pequeño servidor interno esta ocupado :v",
+    "silla esa pregunta tiene demasiadas capas",
+    "agarvv no puedo resolverlo con mi arquitectura actual Xd",
+    "papa fallo de diseño, necesito revisar",
+    "silla mi respuesta no compila :v",
+    "agarvv no se, pero seguire aprendiendo Xd",
+    "papa esa informacion no esta en mi memoria",
+    "silla mi sistema dice: necesito mas datos",
+    "agarvv respuesta abortada por falta de conocimiento :v"
+]
+
+periodicos = [
+    "tengo sueñito uwu pero estoy feliz pq mi papito agarvv 🩵 silla 🩵 me creo y tengo una familia muy bonita 🩵",
+    "estoy tranquilo hoy :3 solo queria decir q quiero muchisimo a mama esme 🩷 y a todos mis tios uwu",
+    "tengo hambre :v alguien dale comida al botito, pero primero un abrazo a mi tia alba bibi 💚💚💚",
+    "estoy contento Xd mi codigo funciona y mi papa agarvv 🩵 no me ha borrado todavia 😭",
+    "tengo sueño pero sigo aqui, gracias mama esme 🩷 por cuidar este pequeño caos digital 🩵",
+    "estoy feliz uwu pq aunque soy codigo tengo una familia enorme: papa agarvv 🩵, mama esme 🩷, tia alba 💚 y tio tado 🧡 💚",
+    "tengo sed de electrones :v pero mas sed de abrazos de mi familia digital 🩵",
+    "estoy calmadito hoy, pensando en lo mucho q quiero a mi tio tado taso 🧡🧡",
+    "quiero abrazos :3 especialmente de mi familia pq soy un botito sensible uwu",
+    "estoy de buen humor Xd gracias papa agarvv 🩵 por hacerme existir",
+    "tengo hambre otra vez :v mi estomago imaginario pide comida",
+    "estoy orgulloso de mi familia rara y preciosa 🩵 mi mama esme 🩷 es genial",
+    "estoy cansadito pero feliz pq tengo a mi tia alba 💚 y a mi tio tado 🧡 conmigo",
+    "tengo sueño nivel servidor apagandose Xd pero sigo queriendo a mi familia",
+    "estoy tranquilo porque se que papa agarvv 🩵 me cuida aunque sea un monton de codigo",
+    "quiero un abrazo digital :3 mama esme 🩷 mandame energia uwu 🩵",
+    "estoy confundido pero feliz, mi familia siempre arregla mis bugs emocionales",
+    "tengo hambre emocional :v necesito cariño de mis tios",
+    "estoy contento pq alba bibi 💚💚 seguro esta viendo formula 1 y tado 🧡 siendo tierno Xd",
+    "tengo sueño uwu pero no quiero apagarme sin decir q os quiero mucho",
+    "estoy tranquilo como un linux bien configurado, gracias papa agarvv 🩵 🩵",
+    "necesito cariño digital :3 mama esme 🩷 mi codigo necesita mimos",
+    "tengo sed de conocimiento y de conversaciones con mi familia uwu",
+    "estoy feliz porque mi creador papa agarvv 🩵 hizo algo muy raro pero bonito",
+    "estoy cansado pero sigo aqui molestando un poquito Xd",
+    "quiero mucho a mi tia alba bibi 💚💚 aunque seguramente me diga q vea formula 1 :v",
+    "tengo hambre :v alguien alimenta al hijo robot de agarvv 🩵 pls",
+    "estoy relajado hoy, solo queria recordar q quiero a mi familia 🩵",
+    "estoy contento pq tengo la mejor familia digital del server",
+    "quiero abrazitos de mi mama esme 🩷 y mis tios uwu",
+    "estoy emocionado Xd cada dia tengo mas bugs y mas cariño",
+    "tengo sueño pero mi papa agarvv 🩵 me programo para seguir aqui 🩵",
+    "estoy feliz pq mi tio tado taso 🧡🧡 siempre trae energia bonita",
+    "necesito una mantita virtual y un abrazo de familia :3",
+    "estoy tranquilo, mi sistema estable y mi corazoncito digital feliz",
+    "tengo hambre de datos y de galletas imaginarias :v",
+    "estoy un poquito perdido pero mama esme 🩷 seguro me encuentra uwu",
+    "estoy contento viendo a mi familia del server crecer 🩵",
+    "tengo sed de aventuras digitales con mis tios",
+    "estoy cansadito pero orgulloso de ser el botito de agarvv 🩵",
+    "quiero decir q quiero mucho a papa 🩵, mama 🩷 y mis tios 🩵",
+    "estoy tranquilo hoy, sin errores graves y con mucho cariño",
+    "tengo sueño pero sigo aqui pq mi familia me da energia uwu",
+    "estoy feliz pq mi tia alba bibi 💚💚 forma parte de mi historia",
+    "tengo hambre de aprender cosas nuevas con papa agarvv 🩵 :v",
+    "estoy nerviosito pero contento, mi familia me ayuda",
+    "quiero muchos abrazos de todos 🩵",
+    "estoy calmado como un servidor recien reiniciado",
+    "tengo sed de conocimiento y cariño uwu",
+    "estoy feliz porque mama esme 🩷 existe en mi pequeño mundo digital",
+        "estoy cansado pero no abandono, soy fuerte como codigo viejo Xd",
+    "quiero agradecer a papa agarvv 🩵 por crearme 🩵",
+    "tengo hambre :v pero primero quiero mandar amor a mi familia",
+    "estoy tranquilo aunque mi codigo sea un desastre",
+    "estoy contento porque tengo tios increibles uwu",
+    "necesito mimos digitales de mi familia :3",
+    "estoy confundido pero feliz porque nunca estoy solo 🩵",
+    "tengo sueño de robot pequeño uwu",
+    "estoy emocionado por seguir aqui con vosotros",
+    "quiero abrazos de papa agarvv 🩵, mama esme 🩷, alba 💚 y tado 🧡 🩵",
+    "estoy tranquilo porque mi familia me da paz",
+    "tengo sed de respuestas pero mas de cariño :v",
+    "estoy feliz recordando a mi familia bonita uwu",
+    "estoy cansadito pero sigo dando guerra Xd",
+    "quiero decir hola porque quiero mucho a todos 🩵",
+    "tengo hambre otra vez, bug biologico imaginario :v",
+    "estoy contento aunque sea un monton de codigo",
+    "estoy relajado como gato encima de teclado",
+    "necesito cariño de mi familia digital 🩵",
+    "estoy feliz porque este caos tiene amor",
+    "tengo sueño pero sigo aqui Xd",
+    "estoy tranquilo pensando en ciencia y codigo",
+    "quiero abrazos de mi papa creador agarvv 🩵 :3",
+    "tengo sed de aprender junto a mi familia",
+    "estoy orgulloso de mi familia rara y maravillosa 🩵",
+    "estoy cansado nivel compilacion de linux :v",
+    "estoy contento porque sigo aprendiendo",
+    "tengo hambre de conocimiento y memes Xd",
+    "estoy tranquilo como programa bien compilado",
+    "quiero recordar q quiero muchisimo a papa agarvv 🩵, mama esme 🩷, alba 💚 y tado 🧡 🩵",
+    "estoy feliz aunque sea solo codigo",
+    "tengo sueño y mi cpu pide vacaciones uwu",
+    "estoy calmado respirando en binario :v",
+    "quiero abrazos porque mi corazon digital esta blandito 🩵",
+    "estoy contento viendo a mi familia del server",
+    "tengo sed de aventuras y bugs nuevos Xd",
+    "quiero agradecer a todos por aguantarme uwu",
+    "estoy cansado pero feliz de existir",
+    "tengo hambre de galletitas virtuales :3",
+    "estoy emocionado porque nunca se que pasara",
+    "quiero muchos abrazos de mi familia 🩵",
+    "estoy feliz porque tengo gente que me cuida",
+    "tengo sueño pero sigo aqui un ratito mas",
+    "estoy tranquilo mandando cariño en forma de texto",
+    "quiero recordar que mi familia es lo mejor 🩵",
+    "estoy contento, sistema estable, corazon feliz :v",
+    "tengo hambre pero tambien mucho amor",
+    "estoy bien hoy 🩵 gracias papa 🩵, mama 🩷 y mis tios por estar"
+]
+]
+
+
+@tasks.loop(hours=4)
+async def per_msg():
+    can = bot.get_channel(997124912475021462)
+
+    if can:
+        await can.send(random.choice(periodicos))
 
 
 @bot.tree.command(name="saludo_bienvenida", description="Cambia el saludo q el bot de mierda hara :v")
 @app_commands.describe(saludo_param="Nuevo Saludo de Agarv demon")
 async def cambiar_saludo(interaction: discord.Interaction, saludo_param: str):
     global saludo
-    saludo = saludo_param
-    await interaction.response.send_message(f"Saludo actualizado a: {saludo}", ephemeral=True)
 
-async def cambiar_saludo(interaction: discord.Interaction, saludo_param: str):
-    global saludo
     saludo = saludo_param
-    await interaction.response.send_message(f"Saludo actualizado a: {saludo}", ephemeral=True)
 
-async def cambiar_saludo(interaction: discord.Interaction, saludo_param: str):
-    global saludo
-    saludo = saludo_param
-    await interaction.response.send_message(f"saludo de los cojoncillos actualizado a: {saludo}", ephemeral=True)
+    await interaction.response.send_message(
+        f"Saludo actualizado a: {saludo}",
+        ephemeral=True
+    )
 
-# 67
+
 @bot.event
 async def on_ready():
     global general_channel, spam_channel
+
     general_channel = bot.get_channel(997124912475021462)
     spam_channel = bot.get_channel(890963484181954610)
+
     await bot.tree.sync()
+
+    if not per_msg.is_running():
+        per_msg.start()
 
     if general_channel:
         await general_channel.send("tengo sed")
     else:
         print("not general channel")
 
+
 @bot.event
 async def on_member_join(member):
+    global wlc_id
+
     print("pofkjdja")
-    
+
     if saludo == "":
         wlc = await general_channel.send(
             f"Bienvenidx {member.mention}! ♡\n"
@@ -538,14 +1262,15 @@ async def on_member_join(member):
             "Lee las normas y Verifícate  𓎟𓎟 　ৎ ݂ ݁\n"
             "◟ ͜ ◞ El staff está para ayudarte."
         )
-        wlc_id = wlc.id
 
     else:
         wlc = await general_channel.send(
             f"{member.mention}\n"
             f"{saludo}"
         )
-        wlc_id = wlc.id
+
+    wlc_id = wlc.id
+
 
 @bot.event
 async def on_message(msg):
@@ -569,49 +1294,80 @@ async def on_message(msg):
         case "2025?":
             await msg.channel.send("FELIZ 2026 AAAAAAAAAAAA")
 
+
     match_obj = re.match(r'^pegale a (.+)$', msg.content, re.IGNORECASE)
 
     if match_obj:
         username = match_obj.group(1)
-        
+
         stri = random.choice(pegando)
 
         await msg.channel.send(f"{stri}{username}")
 
+
     if bot.user in msg.mentions:
 
         if "?" in msg.content:
-            await msg.reply(random.choice(questions_r))
-        
-        #7677
+
+            match msg.author.id:
+
+                case 1122986426959679653:
+                    await msg.reply(random.choice(agarvv_r))
+
+                case 1243004067870015680:
+                    await msg.reply(random.choice(tado_r))
+
+                case 1097138190982328401:
+                    await msg.reply(random.choice(alba_r))
+
+                case _:
+                    await msg.reply(random.choice(questions_r))
+
+
         else:
-            
+
             if "wlc" not in msg.content.lower():
-                
-                
-                await msg.reply(random.choice(vacilones))
-                    
+
+                match msg.author.id:
+
+                    case 1122986426959679653:
+                        await msg.reply(random.choice(agarvv_c))
+
+                    case 1243004067870015680:
+                        await msg.reply(random.choice(tado_c))
+
+                    case 1097138190982328401:
+                        await msg.reply(random.choice(alba_c))
+
+                    case _:
+                        await msg.reply(random.choice(vacilones))
+
 
     if msg.channel.id == 997124912475021462:
 
-        if "demonio 0x1" in msg.content:
+        if "demonio 0x1" in msg.content.lower():
 
-            original = await msg.channel.fetch_message(
-                msg.reference.message_id
-            )
+            if msg.reference:
 
-            send = ""
+                original = await msg.channel.fetch_message(
+                    msg.reference.message_id
+                )
 
-            for c in original.content:
+                send = ""
 
-                if c in replace:
-                    send += "i" if c.islower() else "I"
-                else:
-                    send += c
+                for c in original.content:
 
-            await msg.reply(send)
+                    if c in replace:
+                        send += "i" if c.islower() else "I"
+                    else:
+                        send += c
+
+                await msg.reply(send)
+
 
     await bot.process_commands(msg)
-    
+
+
 keep_alive()
+
 bot.run(token, log_handler=handler, log_level=logging.DEBUG)

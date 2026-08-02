@@ -585,7 +585,9 @@ async def on_message(msg):
         
         #7677
         else:
-            if "wlc" in msg.content.lower():
+            
+            if "wlc" not in msg.content.lower():
+                
                 
                 await msg.reply(random.choice(vacilones))
                     

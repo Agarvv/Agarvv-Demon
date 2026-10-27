@@ -1212,13 +1212,13 @@ periodicos = [
     "estoy bien hoy 🩵 gracias papa 🩵, mama 🩷 y mis tios por estar"
 ]
 
-"""
+
 @tasks.loop(hours=4)
 async def per_msg():
     can = bot.get_channel(997124912475021462)
     if can:
         await can.send(random.choice(periodicos))
-"""
+
 
 @bot.tree.command(name="saludo_bienvenida", description="Cambia el saludo q el bot de mierda hara :v")
 @app_commands.describe(saludo_param="Nuevo Saludo de Agarv demon")

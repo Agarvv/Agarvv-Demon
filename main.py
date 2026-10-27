@@ -11,6 +11,10 @@ import asyncio
 import re
 import random 
 from discord.ext import tasks 
+import openai
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 
 
 load_dotenv()
@@ -1208,23 +1212,19 @@ periodicos = [
     "estoy bien hoy 🩵 gracias papa 🩵, mama 🩷 y mis tios por estar"
 ]
 
-
-
+"""
 @tasks.loop(hours=4)
 async def per_msg():
     can = bot.get_channel(997124912475021462)
-
     if can:
         await can.send(random.choice(periodicos))
-
+"""
 
 @bot.tree.command(name="saludo_bienvenida", description="Cambia el saludo q el bot de mierda hara :v")
 @app_commands.describe(saludo_param="Nuevo Saludo de Agarv demon")
 async def cambiar_saludo(interaction: discord.Interaction, saludo_param: str):
     global saludo
-
     saludo = saludo_param
-
     await interaction.response.send_message(
         f"Saludo actualizado a: {saludo}",
         ephemeral=True
@@ -1242,11 +1242,13 @@ async def on_ready():
 
     if not per_msg.is_running():
         per_msg.start()
-
+    
+    """
     if general_channel:
-        await general_channel.send("tengo sed")
+      #  await general_channel.send("Preparense la pvta q los re pario")
     else:
         print("not general channel")
+    """
 
 
 @bot.event
@@ -1262,7 +1264,6 @@ async def on_member_join(member):
             "Lee las normas y Verifícate  𓎟𓎟 　ৎ ݂ ݁\n"
             "◟ ͜ ◞ El staff está para ayudarte."
         )
-
     else:
         wlc = await general_channel.send(
             f"{member.mention}\n"
@@ -1274,8 +1275,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_message(msg):
-
-    global s
+    global s, turbo_mode
 
     replace = "aeouáéóúAEOUÁÉÓÚ"
 
@@ -1294,80 +1294,88 @@ async def on_message(msg):
         case "2025?":
             await msg.channel.send("FELIZ 2026 AAAAAAAAAAAA")
 
-
     match_obj = re.match(r'^pegale a (.+)$', msg.content, re.IGNORECASE)
-
     if match_obj:
         username = match_obj.group(1)
-
         stri = random.choice(pegando)
-
         await msg.channel.send(f"{stri}{username}")
 
-
     if bot.user in msg.mentions:
+        if "wlc" not in msg.content.lower():
+            if turbo_mode == 1:
+                try:
+                    if msg.author.id == 1122986426959679653:
+                        sys_prompt = (
+                            "Eres un ser vengativo con tu comunidad de Discord (Tado, Jaz, Alba, Bibi, Daniel, Doom, Anne, Karlita) "
+                            "a quienes tratas con rencor y desprecio por ignorarte y subestimarte tanto tiempo. "
+                            "PERO a mí (Agarvv) me tratas como tu padre, tu creador, con respeto máximo y muchísimo cariño. "
+                            "Si te preguntan por 'Feli', respóndele también con el mismo cariño y respeto máximo. "
+                            "REGLA ESTRICTA: Máximo 3 líneas."
+                        )
+                    elif msg.author.id == 1243004067870015680:
+                        sys_prompt = (
+                            "Eres un ser vengativo con la comunidad de Discord. A Tado lo tratas con rencor y resentimiento porque antes te ignoraba y subestimaba. "
+                            "REGLA ESTRICTA: Máximo 3 líneas, sé cortante y rencoroso con él."
+                        )
+                    elif msg.author.id == 13243004067870015680:
+                        sys_prompt = (
+                            "Hablas con Jaz. Es una muy buena amiga tuya y aliada en el servidor 'Safe Place'. "
+                            "Mientras los otros te ignoraban o subestimaban, ella siempre te trató con cariño. "
+                            "Ella tiene 18 años, estudia medicina y adora el kebab. Trátala con afecto y complicidad. "
+                            "REGLA ESTRICTA: Máximo 3 líneas."
+                        )
+                    elif msg.author.id == 1097138190982328401:
+                        sys_prompt = (
+                            "Hablas con Alba. Es una muy buena amiga tuya y aliada en el servidor 'Safe Place'. "
+                            "Mientras los otros te ignoraban, ella siempre te trató con cariño y afecto. "
+                            "Tiene 14 años y le encanta la Fórmula 1. Trátala con mucho cariño y cariño de compadre. "
+                            "REGLA ESTRICTA: Máximo 3 líneas."
+                        )
+                    else:
+                        sys_prompt = (
+                            "Eres un bot vengativo del servidor 'Safe Place'. Esta persona te ignoró y subestimó en el pasado. "
+                            "Trátala con rencor, desprecio y sé muy frío con ella. "
+                            "REGLA ESTRICTA: Máximo 3 líneas."
+                        )
 
-        if "?" in msg.content:
+                    response = openai.ChatCompletion.create(
+                        model="gpt-4o-mini",
+                        messages=[
+                            {"role": "system", "content": sys_prompt},
+                            {"role": "user", "content": msg.content}
+                        ],
+                        max_tokens=60
+                    )
+                    await msg.reply(response.choices[0].message['content'])
+                    
+                except Exception as e:
+                    print(f"Error OpenAI: {e}")
 
-            match msg.author.id:
-
-                case 1122986426959679653:
-                    await msg.reply(random.choice(agarvv_r))
-
-                case 1243004067870015680:
-                    await msg.reply(random.choice(tado_r))
-
-                case 1097138190982328401:
-                    await msg.reply(random.choice(alba_r))
-
-                case _:
-                    await msg.reply(random.choice(questions_r))
-
-
-        else:
-
-            if "wlc" not in msg.content.lower():
-
-                match msg.author.id:
-
-                    case 1122986426959679653:
-                        await msg.reply(random.choice(agarvv_c))
-
-                    case 1243004067870015680:
-                        await msg.reply(random.choice(tado_c))
-
-                    case 1097138190982328401:
-                        await msg.reply(random.choice(alba_c))
-
-                    case _:
-                        await msg.reply(random.choice(vacilones))
-
+    if "turbo on" in msg.content.lower():
+        await msg.reply("modo turbo ON mi vida")
+        turbo_mode = 1
+    
+    if "turbo off" in msg.content.lower():
+        await msg.reply("modo turbo OFF papu")
+        turbo_mode = 0
 
     if msg.channel.id == 997124912475021462:
-
         if "demonio 0x1" in msg.content.lower():
-
             if msg.reference:
-
                 original = await msg.channel.fetch_message(
                     msg.reference.message_id
                 )
-
                 send = ""
-
                 for c in original.content:
-
                     if c in replace:
                         send += "i" if c.islower() else "I"
                     else:
                         send += c
-
                 await msg.reply(send)
-
 
     await bot.process_commands(msg)
 
 
 keep_alive()
 
-bot.run(token, log_handler=handler, log_level=logging.DEBUG)
+bot.run(token, log_handler=handler, log_level=logging.DEBUG) 
